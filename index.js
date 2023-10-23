@@ -85,45 +85,35 @@ const whereAmI = () => {
 btn.addEventListener('click', whereAmI);
 
 /////////////////////
-// Old AJAX pre-ES6
 /*
-const getCountryAndNeighbor = function (country) {
-  //ajax call primary country:
-  const request = new XMLHttpRequest();
-  request.open('GET', `https://restcountries.com/v3.1/name/${country}`);
-  request.send();
-  request.addEventListener('load', function () {
-    // Parse JSON responseText to js object:
-    const [data] = JSON.parse(this.responseText);
-    console.log(data);
-
-    //render country:
-    renderCountry(data);
-
-    //get neighbor countries:
-    const neighbors = data.borders;
-    if (!neighbors) return;
-
-    //ajax call neighboring countries:
-    // loop all countries in data.borders array
-    neighbors.forEach(neighbor => {
-      const request2 = new XMLHttpRequest();
-      request2.open(
-        'GET',
-        `https://restcountries.com/v3.1/alpha/${neighbor}
-          `
-      );
-      request2.send();
-      request2.addEventListener('load', function () {
-        const [data2] = JSON.parse(this.responseText);
-        // console.log(data2);
-
-        //render country:
-        renderCountry(data2, 'neighbor');
-      });
-    });
+// Async/Await
+const getPosition = function () {
+  return new Promise(function (resolve, reject) {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
   });
 };
 
-getCountryAndNeighbor('usa');
+const whereAmI = async function (country) {
+  // Geolocation
+  const pos = await getPosition();
+  const { latitude: lat, longitude: lng } = pos.coords;
+
+  // Reverse geocoding API
+  const resGeo = await fetch(
+    `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude${lat}&longitude(${lng})`
+  );
+  const dataGeo = await resGeo.json();
+  console.log(dataGeo);
+
+  const res = await fetch(
+    `https://restcountries.com/v3.1/name/${dataGeo.countryName}`
+  );
+  console.log(res);
+
+  const data = await res.json();
+  console.log(data);
+  renderCountry(data[0]);
+};
+whereAmI();
+console.log('FIRST');
 */
