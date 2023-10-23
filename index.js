@@ -67,7 +67,7 @@ const whereAmI = () => {
       // console.log(data);
       const { city, countryName } = data;
       // alert(`You are in ${city}, ${countryName}`);
-      console.log(`You are in ${city}, ${countryName}`);
+      alert(`You are in ${city}, ${countryName}`);
       return fetch(`https://restcountries.com/v3.1/name/${countryName}`);
     })
     .then(res => {
